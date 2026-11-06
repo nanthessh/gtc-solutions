@@ -77,6 +77,22 @@ Compiled production files are generated in `dist/gtc-solutions/browser`.
 
 ---
 
+## ⚡ 1-Click Vercel Deployment
+
+This project is pre-configured for **Vercel** with `vercel.json` included:
+
+1. Sign in to [Vercel](https://vercel.com/) (using your GitHub account `nanthessh`).
+2. Click **"Add New..."** &rarr; **"Project"**.
+3. Select and import **`gtc-solutions`** from your GitHub repositories.
+4. Vercel automatically detects the settings:
+   - **Framework Preset**: Angular / Other
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist/gtc-solutions/browser`
+5. Click **"Deploy"**.
+6. Within 60 seconds, your site will be live with a free custom SSL domain (e.g., `gtc-solutions.vercel.app`)!
+
+---
+
 ## 📤 Pushing to Your GitHub Repository
 
 The repository has been initialized with the `main` branch and the initial commit.
