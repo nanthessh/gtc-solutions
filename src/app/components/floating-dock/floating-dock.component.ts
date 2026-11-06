@@ -2,11 +2,39 @@ import { Component, HostListener, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../services/modal.service';
 
+interface SectionDot {
+  id: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-floating-dock',
   standalone: true,
   imports: [CommonModule],
   template: `
+    <!-- Desktop Floating Vertical Navigation Dots (Right Edge) -->
+    <div class="hidden xl:flex fixed right-5 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3 bg-white/80 backdrop-blur-xl p-2.5 rounded-full border border-slate-200/90 shadow-xl pointer-events-auto">
+      <div *ngFor="let sec of sections" class="relative group flex items-center">
+        <!-- Floating Tooltip Label on Hover -->
+        <div class="absolute right-7 px-2.5 py-1 rounded-lg bg-slate-900 text-white text-[10px] font-bold tracking-wide whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 -translate-x-1 group-hover:translate-x-0 shadow-md">
+          {{ sec.name }}
+        </div>
+        <!-- Dot Button -->
+        <button (click)="scrollToSection(sec.id)" 
+                [class.w-3]="activeSection() === sec.id"
+                [class.h-3]="activeSection() === sec.id"
+                [class.bg-red-600]="activeSection() === sec.id"
+                [class.scale-125]="activeSection() === sec.id"
+                [class.shadow-[0_0_8px_rgba(220,38,38,0.7)]]="activeSection() === sec.id"
+                [class.w-2]="activeSection() !== sec.id"
+                [class.h-2]="activeSection() !== sec.id"
+                [class.bg-slate-300]="activeSection() !== sec.id"
+                class="rounded-full transition-all duration-300 hover:bg-red-500 hover:scale-125 cursor-pointer"
+                [attr.aria-label]="sec.name">
+        </button>
+      </div>
+    </div>
+
     <!-- Floating Bottom-Right Quick Action Dock -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 pointer-events-none">
       
@@ -22,12 +50,12 @@ import { ModalService } from '../../services/modal.service';
       </button>
 
       <!-- Main Floating Action Pill -->
-      <div class="pointer-events-auto flex items-center gap-2 p-1.5 rounded-full bg-white/95 shadow-2xl border border-slate-200/90 backdrop-blur-xl floating-shadow animate-float-slow">
+      <div class="pointer-events-auto flex items-center gap-2 p-1.5 rounded-full bg-white/95 shadow-2xl border border-slate-200/90 backdrop-blur-xl floating-shadow animate-float-slow hover:animate-none">
         
         <!-- Direct Call Pill -->
         <a href="tel:+918438898767" 
-           title="Call Gowtham" 
-           class="p-2.5 rounded-full bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-600 transition-colors">
+           title="Call Gowtham Directly" 
+           class="p-2.5 rounded-full bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-600 transition-colors cursor-pointer">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
           </svg>
@@ -37,7 +65,7 @@ import { ModalService } from '../../services/modal.service';
         <a href="https://wa.me/918438898767?text=Hello%20GTC%20Solutions,%20I%20would%20like%20to%20book%20a%20consultation" 
            target="_blank" 
            title="Chat on WhatsApp" 
-           class="relative p-2.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white transition-all shadow-md hover:scale-105">
+           class="relative p-2.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white transition-all shadow-md hover:scale-105 cursor-pointer">
           <span class="absolute -top-1 -right-1 flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600 border-2 border-white"></span>
@@ -49,7 +77,7 @@ import { ModalService } from '../../services/modal.service';
 
         <!-- Quick Consultation Trigger Button -->
         <button (click)="openBooking()" 
-                class="flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-md transition-all hover:shadow-lg cursor-pointer">
+                class="flex items-center gap-2 px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold shadow-md transition-all hover:shadow-lg hover:scale-102 cursor-pointer">
           <span>Book Consultation</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -63,14 +91,46 @@ import { ModalService } from '../../services/modal.service';
 export class FloatingDockComponent {
   private modalService = inject(ModalService);
   showBackToTop = signal<boolean>(false);
+  activeSection = signal<string>('home');
+
+  readonly sections: SectionDot[] = [
+    { id: 'home', name: 'Home' },
+    { id: 'highlights', name: 'Highlights' },
+    { id: 'about', name: 'About Gowtham' },
+    { id: 'services', name: 'Services' },
+    { id: 'portfolio', name: 'Portfolio' },
+    { id: 'why-us', name: 'Why GTC' },
+    { id: 'faq', name: 'FAQ' },
+    { id: 'contact', name: 'Contact' }
+  ];
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
-    this.showBackToTop.set(window.scrollY > 400);
+    const scrollY = window.scrollY;
+    this.showBackToTop.set(scrollY > 400);
+
+    const checkList = ['contact', 'faq', 'why-us', 'portfolio', 'services', 'about', 'highlights', 'home'];
+    const threshold = scrollY + 180;
+    for (const id of checkList) {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= threshold) {
+        this.activeSection.set(id);
+        break;
+      }
+    }
   }
 
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  scrollToSection(sectionId: string): void {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      const yOffset = -90;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   }
 
   openBooking(): void {

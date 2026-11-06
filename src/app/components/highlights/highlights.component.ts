@@ -16,63 +16,64 @@ interface HighlightItem {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <section class="relative py-20 bg-white">
+    <section id="highlights" class="relative py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-16">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 text-red-700 text-xs font-bold uppercase tracking-wider mb-4 border border-red-100">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 text-red-700 text-xs font-extrabold uppercase tracking-wider mb-4 border border-red-100 shadow-xs">
             Integrated Financial Capabilities
           </div>
           <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Key Financial & Advisory Highlights
+            Key Financial &amp; Advisory Highlights
           </h2>
           <p class="mt-4 text-base sm:text-lg text-slate-600">
             A structured, business-focused approach combining records, compliance, costing, and strategic financial decision support.
           </p>
         </div>
 
-        <!-- 6 Floating Cards Grid -->
+        <!-- 6 Floating Cards Grid with 3D Hover Lift -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           <div *ngFor="let item of highlights" 
-               class="group relative bg-slate-50/70 hover:bg-white rounded-3xl p-8 border border-slate-200/80 hover:border-red-200/80 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between">
+               class="group relative bg-slate-50/80 hover:bg-white rounded-3xl p-8 border border-slate-200/90 hover:border-red-300 shadow-sm hover:shadow-2xl floating-card-lift flex flex-col justify-between">
             
             <!-- Hover Glow Gradient -->
-            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-red-500/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+            <div class="absolute inset-0 rounded-3xl bg-gradient-to-br from-red-500/[0.05] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
 
             <div>
               <!-- Header Row -->
               <div class="flex items-center justify-between mb-6">
-                <div class="w-14 h-14 rounded-2xl bg-white shadow-md border border-slate-100 flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-all duration-300">
+                <div class="w-14 h-14 rounded-2xl bg-white shadow-md border border-slate-100 flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white group-hover:scale-105 transition-all duration-300">
                   <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="item.iconPath"></svg>
                 </div>
-                <span class="text-2xl font-black text-slate-200 group-hover:text-red-200 transition-colors">
+                <span class="text-2xl font-black text-slate-300 group-hover:text-red-300 transition-colors">
                   {{ item.number }}
                 </span>
               </div>
 
               <!-- Title & Description -->
-              <span class="inline-block text-[11px] font-bold tracking-wider uppercase text-red-600 mb-2">
+              <span class="inline-block text-[11px] font-extrabold tracking-wider uppercase text-red-600 mb-2">
                 {{ item.tag }}
               </span>
-              <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-red-600 transition-colors">
+              <h3 class="text-xl font-black text-slate-900 mb-3 group-hover:text-red-600 transition-colors">
                 {{ item.title }}
               </h3>
-              <p class="text-sm text-slate-600 leading-relaxed">
+              <p class="text-sm text-slate-600 leading-relaxed font-medium">
                 {{ item.description }}
               </p>
             </div>
 
             <!-- Footer Action link -->
             <div class="mt-8 pt-5 border-t border-slate-200/60 flex items-center justify-between">
-              <a href="#services" class="text-xs font-bold text-slate-700 group-hover:text-red-600 flex items-center gap-1.5 transition-colors">
+              <button (click)="smoothScrollTo('services')" 
+                      class="text-xs font-bold text-slate-700 group-hover:text-red-600 flex items-center gap-1.5 transition-colors cursor-pointer">
                 <span>View Full Details</span>
                 <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
                 </svg>
-              </a>
+              </button>
               <button (click)="openServiceConsultation(item.title)" 
-                      class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-red-600 hover:text-white hover:border-red-600 shadow-sm transition-all cursor-pointer">
+                      class="text-xs font-bold px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-red-600 hover:text-white hover:border-red-600 shadow-xs transition-all cursor-pointer">
                 Consult
               </button>
             </div>
@@ -140,5 +141,14 @@ export class HighlightsComponent {
 
   openServiceConsultation(service: string): void {
     this.modalService.openConsultation(service);
+  }
+
+  smoothScrollTo(sectionId: string): void {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      const yOffset = -90;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   }
 }
