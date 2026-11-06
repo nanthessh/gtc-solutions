@@ -14,19 +14,23 @@ import { ModalService } from '../../services/modal.service';
           
           <!-- Brand Identity -->
           <div class="lg:col-span-5 space-y-5">
-            <div class="flex items-center gap-3.5">
-              <div class="w-12 h-12 rounded-xl overflow-hidden bg-white p-1 shadow-md border border-slate-800 flex items-center justify-center">
+            <button (click)="openLogoModal()" 
+                    type="button"
+                    class="flex items-center gap-3.5 text-left group cursor-pointer focus:outline-none"
+                    title="Click to view GTC Solutions Brand Profile & Logo Showcase">
+              <div class="w-12 h-12 rounded-xl overflow-hidden bg-white p-1 shadow-md border border-slate-800 flex items-center justify-center transition-all group-hover:scale-105 group-hover:border-red-500">
                 <img src="/images/gtc-logo.jpg" alt="GTC Solutions" class="w-full h-full object-contain" />
               </div>
               <div class="flex flex-col">
-                <span class="text-xl font-extrabold tracking-tight text-white">
+                <span class="text-xl font-extrabold tracking-tight text-white group-hover:text-red-400 transition-colors flex items-center gap-1.5">
                   GTC <span class="text-red-500">SOLUTIONS</span>
+                  <svg class="w-3.5 h-3.5 text-slate-500 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 </span>
                 <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                  Corporate Finance & Business Advisory
+                  Corporate Finance &amp; Business Advisory
                 </span>
               </div>
-            </div>
+            </button>
 
             <p class="text-xs font-semibold text-red-400 uppercase tracking-wider">
               Corporate Finance | Costing & Profitability | Taxation | Compliance | Business Advisory
@@ -125,6 +129,10 @@ import { ModalService } from '../../services/modal.service';
 })
 export class FooterComponent {
   private modalService = inject(ModalService);
+
+  openLogoModal(): void {
+    this.modalService.openBrandModal();
+  }
 
   openPrivacy(): void {
     this.modalService.openPrivacy();

@@ -14,6 +14,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FloatingDockComponent } from './components/floating-dock/floating-dock.component';
 import { ConsultationModalComponent } from './components/consultation-modal/consultation-modal.component';
 import { PolicyModalsComponent } from './components/policy-modals/policy-modals.component';
+import { BrandModalComponent } from './components/brand-modal/brand-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +34,8 @@ import { PolicyModalsComponent } from './components/policy-modals/policy-modals.
     FooterComponent,
     FloatingDockComponent,
     ConsultationModalComponent,
-    PolicyModalsComponent
+    PolicyModalsComponent,
+    BrandModalComponent
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'

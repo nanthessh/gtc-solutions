@@ -82,20 +82,26 @@ interface NavItem {
              [class.h-16]="isScrolled()"
              [class.h-20]="!isScrolled()">
           
-          <!-- Brand Logo & Identity -->
-          <a href="#home" (click)="smoothScroll($event, 'home')" class="flex items-center gap-3 group cursor-pointer">
-            <div class="relative w-11 h-11 rounded-xl overflow-hidden bg-white shadow-sm border border-slate-200/90 p-1 flex items-center justify-center transition-transform group-hover:scale-105 duration-300">
+          <!-- Brand Logo & Identity: Clicking opens Brand Modal -->
+          <button (click)="openLogoModal()" 
+                  type="button"
+                  class="flex items-center gap-3 group cursor-pointer text-left focus:outline-none"
+                  title="Click to view GTC Solutions Brand Profile & Logo Showcase">
+            <div class="relative w-11 h-11 rounded-xl overflow-hidden bg-white shadow-sm border border-slate-200/90 p-1 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:border-red-400">
               <img src="/images/gtc-logo.jpg" alt="GTC Solutions Logo" class="w-full h-full object-contain" />
+              <!-- Subtle red glow on hover -->
+              <span class="absolute inset-0 bg-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></span>
             </div>
             <div class="flex flex-col">
-              <span class="text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-red-600 transition-colors">
+              <span class="text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-red-600 transition-colors flex items-center gap-1.5">
                 GTC <span class="text-red-600">SOLUTIONS</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-red-600 opacity-75 group-hover:scale-150 transition-transform"></span>
               </span>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 group-hover:text-slate-700">
                 Corporate Finance & Advisory
               </span>
             </div>
-          </a>
+          </button>
 
           <!-- Desktop Navigation with Active Scroll-Spy Indicator Pills -->
           <nav class="hidden lg:flex items-center space-x-1 font-semibold text-xs text-slate-700">
@@ -156,6 +162,10 @@ interface NavItem {
         </div>
         
         <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+          <button (click)="openLogoModal(); closeMobileMenu()" class="w-full bg-slate-100 text-slate-800 font-bold py-2.5 rounded-xl text-xs hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
+            <span>View GTC Brand Profile</span>
+            <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
           <a href="tel:+918438898767" class="flex items-center gap-2 text-xs font-semibold text-slate-700 px-4 py-1">
             <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -221,6 +231,10 @@ export class NavbarComponent {
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
+  }
+
+  openLogoModal(): void {
+    this.modalService.openBrandModal();
   }
 
   toggleMobileMenu(): void {

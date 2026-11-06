@@ -95,15 +95,21 @@ import { ModalService } from '../../services/modal.service';
               
               <!-- Card Header -->
               <div class="flex items-center justify-between pb-5 border-b border-slate-100">
-                <div class="flex items-center gap-3">
-                  <div class="w-11 h-11 rounded-xl overflow-hidden bg-white p-1 border border-slate-200 shadow-xs flex items-center justify-center">
+                <button (click)="openLogoModal()" 
+                        type="button"
+                        class="flex items-center gap-3 text-left group/logo cursor-pointer focus:outline-none" 
+                        title="Click to view GTC Solutions Brand Profile & Logo Showcase">
+                  <div class="w-11 h-11 rounded-xl overflow-hidden bg-white p-1 border border-slate-200 shadow-xs flex items-center justify-center group-hover/logo:scale-105 group-hover/logo:border-red-400 transition-all">
                     <img src="/images/gtc-logo.jpg" alt="GTC Logo" class="w-full h-full object-contain" />
                   </div>
                   <div>
-                    <h3 class="text-sm font-extrabold text-slate-900">GTC Financial Suite</h3>
-                    <p class="text-[11px] text-slate-500 font-medium">Integrated Decision Framework</p>
+                    <h3 class="text-sm font-extrabold text-slate-900 group-hover/logo:text-red-600 transition-colors flex items-center gap-1">
+                      <span>GTC Financial Suite</span>
+                      <svg class="w-3 h-3 text-slate-400 group-hover/logo:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </h3>
+                    <p class="text-[11px] text-slate-500 font-medium">Click to view Brand Profile</p>
                   </div>
-                </div>
+                </button>
                 <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-xs flex items-center gap-1.5">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   Active Pan-India
@@ -224,6 +230,10 @@ export class HeroComponent {
 
   openBooking(): void {
     this.modalService.openConsultation('General Advisory & Consultation');
+  }
+
+  openLogoModal(): void {
+    this.modalService.openBrandModal();
   }
 
   smoothScrollTo(sectionId: string): void {

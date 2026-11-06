@@ -8,6 +8,7 @@ export class ModalService {
   readonly selectedService = signal<string>('Corporate Finance');
   readonly isPrivacyModalOpen = signal<boolean>(false);
   readonly isTermsModalOpen = signal<boolean>(false);
+  readonly isBrandModalOpen = signal<boolean>(false);
 
   openConsultation(serviceName: string = 'Corporate Finance'): void {
     this.selectedService.set(serviceName);
@@ -17,6 +18,16 @@ export class ModalService {
 
   closeConsultation(): void {
     this.isConsultationOpen.set(false);
+    document.body.style.overflow = '';
+  }
+
+  openBrandModal(): void {
+    this.isBrandModalOpen.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeBrandModal(): void {
+    this.isBrandModalOpen.set(false);
     document.body.style.overflow = '';
   }
 
